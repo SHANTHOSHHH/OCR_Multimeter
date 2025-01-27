@@ -1,0 +1,69 @@
+2025-01-26 19:09:14,232 - INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.23.3:5000
+2025-01-26 19:09:14,233 - INFO: [33mPress CTRL+C to quit[0m
+2025-01-26 19:09:14,237 - INFO:  * Restarting with stat
+2025-01-26 19:09:21,045 - WARNING:  * Debugger is active!
+2025-01-26 19:09:21,054 - INFO:  * Debugger PIN: 840-763-808
+2025-01-26 19:09:21,077 - INFO: 127.0.0.1 - - [26/Jan/2025 19:09:21] "GET / HTTP/1.1" 200 -
+2025-01-26 19:09:22,276 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:22,282 - INFO: 127.0.0.1 - - [26/Jan/2025 19:09:22] "GET /webcam_feed HTTP/1.1" 200 -
+2025-01-26 19:09:22,515 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:22,609 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:22,698 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:22,777 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:22,859 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:22,932 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,003 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,073 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,153 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,232 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,300 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,366 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,439 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,522 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,605 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,669 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,734 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,805 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,871 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:23,962 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,055 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,119 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,184 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,254 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,331 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,399 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,477 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,547 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,613 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,677 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,752 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,831 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,900 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:24,965 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:25,035 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:25,211 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:25,400 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:25,532 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:25,747 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:25,914 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:26,163 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:26,397 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:27,866 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:30,035 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:32,433 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:33,232 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:33,974 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:34,963 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:36,031 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:36,804 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:37,566 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:39,276 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:40,293 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:40,998 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:42,399 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:43,433 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:44,308 - ERROR: Unexpected error saving data: File is not a zip file
+2025-01-26 19:09:45,203 - ERROR: Unexpected error saving data: File is not a zip file

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" />
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+
+        .banner {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            background: url("https://img.freepik.com/premium-vector/cartoon-drawing-cars-bus-road-with-cartoon-image-car-driving-down-road_650465-6352.jpg") no-repeat center center/cover;
+            filter: blur(4px);
+        }
+
+        .banner-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 2;
+        }
+
+        .banner-text h1 {
+            font-size: 3rem;
+            margin: 0;
+            font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .banner-text p {
+            font-size: 1.2rem;
+            margin: 10px 0 0;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            margin-top: -10px;
+            /* Pull the content up slightly after the banner */
+        }
+
+        .filter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter input {
+            padding: 12px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .filter button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .filter button:hover {
+            background-color: #0056b3;
+        }
+
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary div {
+            text-align: center;
+        }
+
+        .summary div h2 {
+            margin: 0;
+            font-size: 28px;
+            color: #007bff;
+        }
+
+        .summary div p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        table th,
+        table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f8f9fa;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        table th:hover {
+            background-color: #e9ecef;
+        }
+
+        table tr:hover {
+            background-color: #f1f5fa;
+        }
+
+        #details {
+            display: none;
+            padding: 20px;
+            margin: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #details.active {
+            display: block;
+        }
+
+        #details h3 {
+            margin: 0 0 10px;
+            color: #007bff;
+        }
+
+        #details ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #details ul li {
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #e9f7ff;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .download-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .download-buttons button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-buttons button:hover {
+            background-color: #218838;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 1% auto;
+            padding: 10px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 1300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #pagination button {
+            padding: 8px 12px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        #pagination button.active {
+            background-color: #0056b3;
+            font-weight: bold;
+        }
+
+        #pagination button:hover {
+            background-color: #0056b3;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .navigation-buttons .btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner"></div>
+    <div class="banner-text">
+        <h1 data-aos="fade-up" style="text-shadow: 2px 2px black">
+            Dynamic Vehicle Dashboard
+        </h1>
+        <p data-aos="fade-left">
+            Monitor and analyze your vehicle data in real time
+        </p>
+    </div>
+    <div class="navigation-buttons">
+        <a href="/home" class="btn btn-primary">Vehicle Dashboard</a>
+        <a href="/" class="btn btn-secondary">Multimeter Dashboard</a>
+        <a href="/daywise_report" class="btn btn-secondary">Daywise Report</a>
+    </div>
+    
+    <div class="container">
+        <div class="filter" data-aos="fade-up">
+            <input type="text" id="search" placeholder="Search by vehicle type..." />
+            <button onclick="fetchData()">Refresh Data</button>
+        </div>
+
+        <div class="summary" data-aos="fade-right">
+            <div>
+                <h2 id="totalVehicles">0</h2>
+                <p>Total Vehicles</p>
+            </div>
+            <div>
+                <h2 id="avgBatteryVolt">0</h2>
+                <p>Average Battery Voltage</p>
+            </div>
+            <div>
+                <h2 id="avgCurrent">0</h2>
+                <p>Average Battery Current</p>
+            </div>
+            <div>
+                <h2 id="totalPiezoVolt" onclick="openPiezoGraph()" style="cursor: pointer; color: #007bff">
+                    0
+                </h2>
+                <p>Total Piezo Voltage</p>
+            </div>
+        </div>
+        <!-- <div>
+            <h2 id="totalPiezoVolt" onclick="openPiezoGraph()" style="cursor: pointer; color: #007BFF;">0</h2>
+            <p>Total Piezo Voltage</p>
+        </div> -->
+        <div id="graph-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h3>Piezo Voltage Graph</h3>
+                <!-- Date filter inputs -->
+                <div>
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" />
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" />
+                    <button onclick="filterGraphByDate()">Apply Filter</button>
+                </div>
+                <div id="total-vehicles-display" style="font-weight: bold; margin-bottom: 15px; text-align: center;"></div>
+                <canvas id="piezoChart"></canvas>
+            </div>
+        </div>
+        
+        <div id="pagination" style="text-align: center; margin-top: 20px;"></div>
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)" data-aos="fade-up">S. No.</th>
+                    <th onclick="sortTable(1)" data-aos="fade-down">Vehicle</th>
+                    <th onclick="sortTable(2)" data-aos="fade-right">Date</th>
+                    <th onclick="sortTable(3)" data-aos="fade-left">Battery Volt</th>
+                    <th onclick="sortTable(4)" data-aos="fade-up-right">
+                        Battery Current (mA)
+                    </th>
+                    <th onclick="sortTable(5)" data-aos="fade-up-left">
+                        Piezo Voltage
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="dashboard-data">
+                <!-- Data will be dynamically inserted here -->
+            </tbody>
+        </table>
+        <div class="download-buttons">
+            <button onclick="downloadReport('pdf')">Download as PDF</button>
+            <button onclick="downloadReport('xlsx')">Download as XLSX</button>
+            <button onclick="downloadReport('csv')">Download as CSV</button>
+            <button onclick="window.location.href='daywise_report.html'">
+                View Daywise Report
+            </button>
+        </div>
+        <div id="details">
+            <h3>Detailed View</h3>
+            <ul id="details-list">
+                <!-- Detailed data will be inserted here -->
+            </ul>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            AOS.init({
+                duration: 800, // Animation duration (in ms)
+                once: true, // Whether animation should happen only once
+            });
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const elementsToAnimate = document.querySelectorAll(".fade-in");
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                    } else {
+                        entry.target.classList.remove("visible"); // Optional: remove visibility when out of view
+                    }
+                });
+            });
+
+            elementsToAnimate.forEach((el) => observer.observe(el));
+        });
+
+        let ascendingOrder = true;
+
+        async function fetchData() {
+            try {
+                const response = await fetch("http://127.0.0.1:5000/data");
+                const data = await response.json();
+
+                const tbody = document.getElementById("dashboard-data");
+                const totalVehicles = document.getElementById("totalVehicles");
+                const avgBatteryVolt = document.getElementById("avgBatteryVolt");
+                const avgCurrent = document.getElementById("avgCurrent");
+                const totalPiezoVolt = document.getElementById("totalPiezoVolt");
+                tbody.innerHTML = ""; // Clear previous data
+
+                let totalVoltage = 0;
+                let totalCurrent = 0;
+                let totalPiezo = 0;
+
+                data.forEach((item, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.Vehicle}</td>
+                        <td>${item["Date"]}</td>
+                        <td>${item["battery volt"]}</td>
+                        <td>${item["battery current (mA)"]}</td>
+                        <td>${item["piezo Voltage"]}</td>
+                    `;
+                    row.addEventListener("click", () => showDetails(item));
+                    tbody.appendChild(row);
+
+                    totalVoltage += item["battery volt"];
+                    totalCurrent += item["battery current (mA)"];
+                    totalPiezo += item["piezo Voltage"];
+                });
+
+                totalVehicles.innerText = data.length;
+                avgBatteryVolt.innerText = (totalVoltage / data.length).toFixed(2);
+                avgCurrent.innerText = (totalCurrent / data.length).toFixed(2);
+                totalPiezoVolt.innerText = totalPiezo.toFixed(2);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        document.getElementById("search").addEventListener("input", function (e) {
+            const filter = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll("#dashboard-data tr");
+            rows.forEach((row) => {
+                const vehicle = row.cells[1].textContent.toLowerCase();
+                row.style.display = vehicle.includes(filter) ? "" : "none";
+            });
+        });
+
+        function sortTable(columnIndex) {
+            const table = document.querySelector("#dashboard-data");
+            const rows = Array.from(table.rows);
+
+            rows.sort((a, b) => {
+                const aText = a.cells[columnIndex].textContent.trim();
+                const bText = b.cells[columnIndex].textContent.trim();
+
+                if (!isNaN(aText) && !isNaN(bText)) {
+                    return ascendingOrder ? aText - bText : bText - aText;
+                }
+                return ascendingOrder
+                    ? aText.localeCompare(bText)
+                    : bText.localeCompare(aText);
+            });
+
+            ascendingOrder = !ascendingOrder;
+            table.innerHTML = "";
+            rows.forEach((row) => table.appendChild(row));
+        }
+
+        function showDetails(item) {
+            const details = document.getElementById("details");
+            const detailsList = document.getElementById("details-list");
+
+            detailsList.innerHTML = "";
+            for (let key in item) {
+                const li = document.createElement("li");
+                li.textContent = `${key}: ${item[key]}`;
+                detailsList.appendChild(li);
+            }
+
+            details.classList.add("active");
+            details.scrollIntoView({ behavior: "smooth" });
+        }
+
+        function downloadReport(format) {
+            window.location.href = `http://127.0.0.1:5000/download?format=${format}`;
+        }
+        const rowsPerPage = 10; // Number of rows to display per page
+        let currentPage = 1;
+
+        function displayTable(data) {
+            const tbody = document.getElementById("dashboard-data");
+            tbody.innerHTML = "";
+
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = Math.min(startIndex + rowsPerPage, data.length);
+
+            for (let i = startIndex; i < endIndex; i++) {
+                const item = data[i];
+                const row = document.createElement("tr");
+                row.innerHTML = `
+        <td>${i + 1}</td>
+        <td>${item.Vehicle}</td>
+        <td>${item["Date"]}</td>
+        <td>${item["battery volt"]}</td>
+        <td>${item["battery current (mA)"]}</td>
+        <td>${item["piezo Voltage"]}</td>
+      `;
+                row.addEventListener("click", () => showDetails(item));
+                tbody.appendChild(row);
+            }
+        }
+
+        function setupPagination(data) {
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = ""; // Clear previous pagination
+
+            const totalPages = Math.ceil(data.length / rowsPerPage);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement("button");
+                button.textContent = i;
+                button.className = i === currentPage ? "active" : "";
+                button.addEventListener("click", () => {
+                    currentPage = i;
+                    displayTable(data);
+                    setupPagination(data);
+                });
+                pagination.appendChild(button);
+            }
+        }
+
+        async function fetchData() {
+            try {
+                const response = await fetch("http://127.0.0.1:5000/data");
+                const data = await response.json();
+
+                // Update table and pagination
+                displayTable(data);
+                setupPagination(data);
+
+                const totalVehicles = document.getElementById("totalVehicles");
+                const avgBatteryVolt = document.getElementById("avgBatteryVolt");
+                const avgCurrent = document.getElementById("avgCurrent");
+                const totalPiezoVolt = document.getElementById("totalPiezoVolt");
+
+                let totalVoltage = 0;
+                let totalCurrent = 0;
+                let totalPiezo = 0;
+
+                data.forEach((item) => {
+                    totalVoltage += item["battery volt"];
+                    totalCurrent += item["battery current (mA)"];
+                    totalPiezo += item["piezo Voltage"];
+                });
+
+                totalVehicles.innerText = data.length;
+                avgBatteryVolt.innerText = (totalVoltage / data.length).toFixed(2);
+                avgCurrent.innerText = (totalCurrent / data.length).toFixed(2);
+                totalPiezoVolt.innerText = totalPiezo.toFixed(2);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        fetchData();
+        fetchData();
+
+        let piezoChart = null; // Store the chart instance globally to avoid re-creating it
+
+async function openPiezoGraph() {
+    try {
+        // Fetch the data if not already available
+        const response = await fetch("http://127.0.0.1:5000/data");
+        const data = await response.json();
+
+        // Store the fetched data globally for filtering
+        window.originalGraphData = data;
+
+        // Extract piezo voltage and date for the graph
+        const labels = data.map((item) => item["Date"]);
+        const piezoData = data.map((item) => item["piezo Voltage"]);
+
+        // Calculate and display the total number of vehicles
+        const totalVehicles = data.length;
+        const totalVehiclesDisplay = document.getElementById("total-vehicles-display");
+        totalVehiclesDisplay.innerText = `Total Vehicles: ${totalVehicles}`;
+
+        // Open the modal
+        const modal = document.getElementById("graph-modal");
+        modal.style.display = "block";
+
+        // Destroy the previous chart instance if it exists
+        if (piezoChart) {
+            piezoChart.destroy();
+        }
+
+        // Render the graph
+        const ctx = document.getElementById("piezoChart").getContext("2d");
+        piezoChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Piezo Voltage",
+                        data: piezoData,
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        backgroundColor: "rgba(75, 192, 192, 0.2)",
+                        borderWidth: 1,
+                        tension: 0.2,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: "top",
+                    },
+                    title: {
+                        display: true,
+                        text: "Piezo Voltage Over Time",
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Date",
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Voltage",
+                        },
+                    },
+                },
+            },
+        });
+    } catch (error) {
+        console.error("Error fetching or plotting graph data:", error);
+    }
+}
+
+function filterGraphByDate() {
+    const startDate = document.getElementById("startDate").value;
+    const endDate = document.getElementById("endDate").value;
+
+    if (!startDate || !endDate) {
+        alert("Please select both start and end dates.");
+        return;
+    }
+
+    // Convert startDate and endDate to Date objects
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Check if the parsed dates are valid
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+        alert("Invalid date format. Please enter valid dates.");
+        return;
+    }
+
+    // Filter the data based on the date range
+    const filteredData = window.originalGraphData.filter((item) => {
+        // Convert DD-MM-YYYY to YYYY-MM-DD for comparison
+        const [day, month, year] = item["Date"].split("-");
+        const itemDate = new Date(`${year}-${month}-${day}`);
+        return itemDate >= start && itemDate <= end;
+    });
+
+    // Prepare labels and data for the graph
+    const labels = filteredData.map((item) => item["Date"]);
+    const piezoData = filteredData.map((item) => item["piezo Voltage"]);
+
+    // Calculate the total number of vehicles
+    const totalVehicles = filteredData.length;
+
+    // Display total vehicles in the modal
+    const totalVehiclesDisplay = document.getElementById("total-vehicles-display");
+    if (filteredData.length === 0) {
+        totalVehiclesDisplay.innerText = "No data found for the selected date range.";
+        return;
+    }
+    totalVehiclesDisplay.innerText = `Total Vehicles: ${totalVehicles}`;
+
+    // Destroy the previous chart instance if it exists
+    if (piezoChart) {
+        piezoChart.destroy();
+    }
+
+    // Recreate the chart with filtered data
+    const ctx = document.getElementById("piezoChart").getContext("2d");
+    piezoChart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: "Piezo Voltage",
+                    data: piezoData,
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderWidth: 1,
+                    tension: 0.2,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "top",
+                },
+                title: {
+                    display: true,
+                    text: "Filtered Piezo Voltage Over Time",
+                },
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: "Date",
+                    },
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: "Voltage",
+                    },
+                },
+            },
+        },
+    });
+}
+
+function closeModal() {
+    const modal = document.getElementById("graph-modal");
+    modal.style.display = "none";
+}
+
+    </script>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</html>
